@@ -11,7 +11,9 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # CONFIGURATION
 API_URL = "https://client-pixel.groww.in/api/v1/ir-data/calculate"
-OUTPUT_DIR = "."
+# Save output in the same folder as this script
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+OUTPUT_DIR = SCRIPT_DIR
 TIMEOUT = 30
 
 def epoch_to_formatted_time(epoch_ms):
