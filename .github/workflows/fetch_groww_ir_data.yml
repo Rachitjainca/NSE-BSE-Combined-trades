@@ -2,8 +2,8 @@ name: Fetch Groww IR Data
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # Every 5 minutes UTC (GitHub minimum)
-  workflow_dispatch:       # Allow manual trigger
+    - cron: '0 * * * *'  # Run every hour at :00 UTC
+  workflow_dispatch:      # Allow manual trigger
 
 jobs:
   fetch-data:
