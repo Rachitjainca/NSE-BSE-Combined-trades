@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+.venv-1/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+scraper_log.txt
+*.log
+*.png
+bse_csv_cache/
+nse_fo_cache/
+*.txt
+Combined/
+failed_zips/
+NSE busines sgrwoth/
+
+# Keep data files but ignore old timestamped ones
+!Groww/IR_Data/groww_ir_data.csv
+!Groww/IR_Data/groww_ir_data.jsonl
+Groww/IR_Data/groww_ir_data_*.csv
+Groww/IR_Data/groww_ir_data_*.json
+Groww/IR_Data/groww_ir_data_old.csv
