@@ -34,7 +34,7 @@ BSE_BASE_URL = "https://www.bseindia.com/download/Bhavcopy/Derivative/MS_{}.csv"
 BSE_CACHE_DIR = "bse_csv_cache"
 BSE_COLUMN = "No. of Trades"
 
-OUTPUT_CSV = r"C:\Users\rachit.jain\Desktop\Python projects\Exisitng project\NSE BSE Combined\Combined\combined_nse_bse_trade_summary.csv"
+OUTPUT_CSV = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Combined", "combined_nse_bse_trade_summary.csv")
 
 RETRIES = 3
 TIMEOUT = 60
@@ -61,6 +61,7 @@ BSE_HEADERS = {
 
 os.makedirs(NSE_CACHE_DIR, exist_ok=True)
 os.makedirs(BSE_CACHE_DIR, exist_ok=True)
+os.makedirs(os.path.dirname(OUTPUT_CSV), exist_ok=True)
 
 if os.path.exists(OUTPUT_CSV):
     combined_df = pd.read_csv(OUTPUT_CSV, parse_dates=["Date"])
@@ -87,6 +88,9 @@ def download_with_retries(url, headers=None, retries=RETRIES, timeout=TIMEOUT, b
             response = session.get(url, timeout=timeout)
             if response.status_code == 200:
                 return response.content
+            elif response.status_code == 404:
+                print(f"HTTP 404 for {url} (not published / holiday)")
+                return None
             else:
                 print(f"Attempt {attempt+1}: HTTP {response.status_code} for {url}")
         except requests.exceptions.RequestException as e:
@@ -196,6 +200,11 @@ while current_date <= END_DATE:
     nse_total = process_nse_day(current_date)
     bse_total = process_bse_day(current_date)
 
+    # Leave unrecorded so the next run retries it
+    if nse_total is None and bse_total is None:
+        current_date += timedelta(days=1)
+        continue
+
     new_rows.append({
         "Date": iso_date,
         "NSE_NO_OF_TRADE": nse_total if nse_total is not None else pd.NA,
@@ -208,6 +217,7 @@ while current_date <= END_DATE:
 
 if new_rows:
     new_df = pd.DataFrame(new_rows)
+    new_df["Date"] = pd.to_datetime(new_df["Date"])
     combined_df = pd.concat([combined_df, new_df], ignore_index=True)
     combined_df.sort_values("Date", inplace=True)
     combined_df.to_csv(OUTPUT_CSV, index=False)

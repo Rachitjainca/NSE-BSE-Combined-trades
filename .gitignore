@@ -27,7 +27,8 @@ scraper_log.txt
 bse_csv_cache/
 nse_fo_cache/
 *.txt
-Combined/
+Combined/*
+!Combined/combined_nse_bse_trade_summary.csv
 failed_zips/
 NSE busines sgrwoth/
 
