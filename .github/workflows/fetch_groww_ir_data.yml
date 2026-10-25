@@ -47,7 +47,7 @@ jobs:
 
       - name: Commit and push data changes
         run: |
-          git add Groww/IR_Data/groww_ir_data.csv Groww/IR_Data/.previous_metric_values.json
+          git add Groww/IR_Data/
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
